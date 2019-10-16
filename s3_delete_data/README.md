@@ -71,3 +71,5 @@ Once your lambda function creation is done, now go to your AWS S3 buckets page a
 
 For more details about code examplanation, debugging and testing.
 Please checkout my youtube video - 
+<br/>
+[Download source code - S3 Delete data](code)
