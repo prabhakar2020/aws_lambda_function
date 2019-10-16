@@ -7,8 +7,8 @@
  - AWS Lambda can automatically run code in response to multiple events, such as HTTP requests via Amazon API Gateway, modifications to objects in Amazon S3 buckets, EC2 updates, triggering the deployments and etc.
 
 In this example, we are going talk about - 
- *. S3 delete data as soon as data uploaded on S3 bucket
- *. Copy source S3 data to target S3 bucket as soon as data uploaded on Source S3 bucket
+ 1. [S3 delete data as soon as data uploaded on S3 bucket](s3_delete_data)
+ 1. [Copy source S3 data to target S3 bucket as soon as data uploaded on Source S3 bucket](s3_copy_data)
 
 For more details about code examplanation, debugging and testing.
 Please checkout my youtube video - 

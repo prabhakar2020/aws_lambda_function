@@ -2,8 +2,9 @@
 
 In this example, we are going talk about - 
 ```
-AWS lambda function for deleting uploaded objects/ data from S3 bucket as soon as object/ data uploaded on S3 bucket.
+AWS lambda function for copy source S3 bucket objects/ data on target S3 bucket as soon as objects/ data uploaded on source bucket.
 ```
+**Note**: First we have to create two S3 buckets one with name my-source-bucket and second one is my-target-bucket
 
 Steps for creating the AWS Lambda function
 -------------
@@ -25,15 +26,15 @@ Steps for creating the AWS Lambda function
  ![alt text](https://github.com/prabhakar2020/aws_lambda_function/blob/master/images/aws_lambda_creation6.PNG)
  1. Now its time to write a code for first lambda function.
  
- As I described earlier, in this example we are going to delete the data/ objects from S3 bucket as soon as data uploaded on S3 bucket.
+ As I described earlier, in this example we are going to copy the objects/ data from source S3 bucket to target S3 bucket.
   
-The following code snippet (lambda function will be helpful for deleting uploaded objects/ data on S3 bucket
+The following code snippet (lambda function will be helpful for copying  uploaded objects/ data from source S3 bucket to target S3 bucket.
 ```python
 from __future__ import print_function
 import boto3
 import time, urllib
 import json
-"""Code snippet for deleting the objects from AWS S3 bucket as soon as objects uploaded on S3 bucket
+"""Code snippet for copying the objects from AWS source S3 bucket to target S3 bucket as soon as objects uploaded on source S3 bucket
 @author: Prabhakar G
 """
 print ("*"*80)
@@ -44,30 +45,28 @@ s3 = boto3.client('s3')
 
 def lambda_handler(event, context):
     # TODO implement
-    bucket = event['Records'][0]['s3']['bucket']['name']
+    source_bucket = event['Records'][0]['s3']['bucket']['name']
     object_key = urllib.unquote_plus(event['Records'][0]['s3']['object']['key'])
-    
+    target_bucket = 'my-target-bucket'
+    copy_source = {'Bucket': source_bucket, 'Key': object_key}
+    print ("Source bucket : ", source_bucket)
+    print ("Target bucket : ", target_bucket)
+    print ("Log Stream name: ", context.log_stream_name)
+    print ("Log Group name: ", context.log_group_name)
+    print ("Request ID: ", context.aws_request_id)
+    print ("Mem. limits(MB): ", context.memory_limit_in_mb)
     try:
         print ("Using waiter to waiting for object to persist through s3 service")
-        # It will wait till s3 service return the output
         waiter = s3.get_waiter('object_exists')
-        waiter.wait(Bucket=bucket, Key=object_key)
-        response = s3.head_object(Bucket=bucket, Key=object_key)
-        print ("Key :"+str(object_key))
-        print ("Content Type : "+str(response['ContentType']))
-        print ('ETag :' +str(response['ETag']))
-        print ('Content-Length :'+str(response['ContentLength']))
-        print ('KeyName :'+str(object_key))
-        print ('Deleting object :'+str(object_key))
-        # Delete the uploaded objects/ data from defined bucket
-        s3.delete_object(Bucket=bucket, Key=object_key)
+        waiter.wait(Bucket=source_bucket, Key=object_key)
+        s3.copy_object(Bucket=target_bucket, Key=object_key, CopySource=copy_source)
         return response['ContentType']
     except Exception as err:
         print ("Error -"+str(err))
-        return err
+        return e
 ```
 
-Once your lambda function creation is done, now go to your AWS S3 buckets page and click on the bucket name which you have selected on lambda function **Add triggers** page.  Upload any file and refresh the page once file is uploaded. It will delete the file as soon as upload is completed on S3 bucket.
+Once your lambda function creation is done, now go to your AWS  S3 buckets page and click on my-source-bucket name which you have selected on lambda function **Add triggers** page.  Upload any file on my-source-bucket and then go to my-target-bucket and check. Both the bucket you can see the similar data.
 
 For more details about code examplanation, debugging and testing.
 Please checkout my youtube video - 
