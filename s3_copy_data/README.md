@@ -69,6 +69,7 @@ def lambda_handler(event, context):
 Once your lambda function creation is done, now go to your AWS  S3 buckets page and click on my-source-bucket name which you have selected on lambda function **Add triggers** page.  Upload any file on my-source-bucket and then go to my-target-bucket and check. Both the bucket you can see the similar data.
 
 For more details about code examplanation, debugging and testing.
+<br/>
 Please checkout my youtube video - 
 <br/>
-[Download source code - S3 Copy data](code)
+[Download source code - S3 Copy data](../code)

@@ -70,6 +70,7 @@ def lambda_handler(event, context):
 Once your lambda function creation is done, now go to your AWS S3 buckets page and click on the bucket name which you have selected on lambda function **Add triggers** page.  Upload any file and refresh the page once file is uploaded. It will delete the file as soon as upload is completed on S3 bucket.
 
 For more details about code examplanation, debugging and testing.
+<br/>
 Please checkout my youtube video - 
 <br/>
-[Download source code - S3 Delete data](code)
+[Download source code - S3 Delete data](../code)
